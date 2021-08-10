@@ -1,4 +1,4 @@
-# MongoDB_O_Livro
+# MongoDB para quem não conhece MongoDB
 Exercícios para os leitores do livro de MongoDB para quem não conhece MongoDB 
 
 
