@@ -1,0 +1,571 @@
+##Comandos para treino
+
+
+Iniciar o serviço do MongoDB e o Mongo Shell
+
+--Para iniciar o MongoDB sem usar o caminho padrão
+
+/Applications/MongoDB/V4.0/bin/mongod --dbpath
+/Users/DaniMonteiroDBA/Desktop/MongoDB/data/db
+
+
+--Para iniciar o MongoDB usando arquivo de configuração
+
+/Applications/MongoDB/V4.0/bin/mongod -f
+/Users/DaniMonteiroDBA/Desktop/MongoDB/data/mongod.conf
+
+/Applications/MongoDB/V4.0/bin/mongod --config
+/Users/DaniMonteiroDBA/Desktop/MongoDB/data/mongod.conf
+
+
+--Iniciar o serviço
+/Applications/MongoDB/V4.0/bin/mongod --dbpath /data/db
+
+
+--Iniciar o Mongo Shell
+/Applications/MongoDB/V4.0/bin/mongo
+ 
+ 
+ 
+Inclusão e Exclusão de Dados
+
+1-) Listar os comandos aplicáveis ao banco de dados
+db.help()
+
+
+2-) Verificar todos os bancos de dados do servidor
+show dbs
+
+
+3-) Verificar o banco de dados que está sendo usado
+db
+
+
+4-) Você pode criar variáveis no MongoDB, eu usei este recurso para deixar o código mais fácil de entender. Criar uma variável é muito
+simples: nomeDaVariável= Documento JSON
+
+4a-) Crie a variável documento1
+documento1= (
+{
+"Site": "db4beginners.com", "Categoria": "CriarArtigo", "DataPublicação": "09-23-2017", "PalavrasChave":
+[
+"mongoDB", "DB4B",
+"Banco de Dados", "NoSQL"
+]
+})
+
+
+4b-) Criar variável chamada documento2
+documento2= (
+{
+"NomeSite": "db4beginners.com", "titulo": "Instalação MongoDB", "categoria": "ValidarArtigo", "DataPrevista": "09-24-2017",
+"DataPublicaçao": "09-25-2017", "keyWords":
+[
+"mongoDB", "DB4B",
+"Banco de Dados", "NoSQL"
+],
+"Finalizado":false
+}
+)
+
+
+4c-) Criar variável chamada documento3
+documento3= (
+{
+"_id" : "Dani",
+"NomeSite": "SQL4.us",
+"titulo": "Certificação SQL Server", "categoria": "Gravar Vídeo",
+"Canal Youtube": "DB4Beginners", "keyWords":
+[
+"SQL Server 2016",
+"70-761",
+"Banco de Dados", "Relacional"
+],
+"Finalizado":true
+}
+)
+
+
+Pergunta da Dani… Você percebeu alguma diferença entre os documentos? Perceba que no documento 3 eu atribui um valor para o atributo _id.
+
+
+5-) Inserir um documento na coleção db.Atividades.insert(documento1) OU
+db.Atividades.insertOne(documento1)
+
+
+6-) Inserir vários documentos em uma coleção
+db.Atividades.insertMany([documento2, documento3])
+
+
+7-) Mostrar a quantidade de documentos em uma coleção
+db.Atividades.count()
+ 
+
+8-) Deletar os documentos da coleção com o atributo Finalizado = false
+db.Atividades.remove({Finalizado : false})
+
+
+9-) Deletar todos os documentos da coleção
+db.Atividades.remove({})
+
+
+10-) Contar a quantidade de documentos na coleção
+db.Atividades.count()
+
+
+11-) Deletar a coleção
+db.Atividades.drop()
+
+
+12-) Verificar se existe alguma coleção
+show collections
+
+
+13-) Deletar banco de dados
+db.dropDatabase()
+
+
+
+Atualização de Dados
+Abaixo tenho algumas sugestões de comandos para te ajudar nos testes:
+
+
+1-) Criar variável com um novo documento
+Variável chamada documentoX
+
+documentoX= (
+{
+"NomeSite": "noSQL4ALL.com", "titulo": "Certificação SQL Server", "categoria": "Gravar Vídeo",
+"Canal Youtube": "DB4Beginners", "keyWords":
+[
+"SQL Server 2016",
+"70-761",
+"Banco de Dados", "Relacional"
+],
+ 
+"Finalizado":false
+})
+
+
+2-) Inserir documento na coleção
+db.Atividades.insert (documentoX)
+
+
+3-) Atualizar sem o operador $set (reconstrói o documento)
+db.Atividades.update({Finalizado : false} , {Titulo : "teste", categoria : "update"}, {upsert : true})
+
+
+4-) Executar novamente
+db.Atividades.update({Finalizado : false} , {Titulo : "teste", categoria : "update"}, {upsert : true})
+
+
+5-) Contar a quantidade de documentos na coleção
+db.Atividades.count()
+
+
+6-) Validar como ficaram os documentos da coleção
+db.Atividades.find().pretty()
+
+
+7-) Inserir na coleção o documento
+db.Atividades.insert (documentoX)
+
+
+8-) Atualizar o atributo Finalizado para true com o operador $set
+db.Atividades.update({Finalizado : false} , {$set : {Finalizado
+: "true"}}, {upsert : false})
+
+
+9-) Apagar o atributo Finalizado para true com o operador $set
+db.Atividades.update({Finalizado : "true"} , {$unset :
+{Finalizado : "true"}}, {upsert : false})
+
+
+10-) Validar como ficaram os documentos da coleção
+db.Atividades.find().pretty()
+ 
+ 
+ 
+Consultas nos dados
+1-) Criar um banco de dados
+use DB4B
+
+
+2-) Criar Coleção
+db.createCollection("Atividades")
+
+
+3-) Verificar as informações de uma coleção
+db.Atividades.validate()
+
+
+4-) Verificar as coleções criadas no Banco de Dados
+show collections
+
+
+5-) Criar variáveis usadas nos próximos exemplos
+documento = (
+{
+"NomeSite": "db4beginners.com", "categoria": "CriarArtigo", "DataPrevista": "09-23-2017", "keyWords":
+[
+"mongoDB", "DB4B",
+"Banco de Dados", "NoSQL"
+],
+"Finalizado":false
+})
+
+
+documentoX = ({
+"Site": "db4beginners.com", "Categoria": "CriarArtigo", "DataPublicação": "09-23-2017", "PalavrasChave":
+[
+"mongoDB", "DB4B",
+"Banco de Dados", "NoSQL"
+]
+})
+ 
+documento1= ({
+"NomeSite": "db4beginners.com", "titulo": "Instalação MongoDB", "categoria": "ValidarArtigo", "DataPrevista": "09-24-2017",
+"DataPublicaçao": "09-25-2017", "keyWords":
+[
+"mongoDB", "DB4B",
+"Banco de Dados", "NoSQL"
+],
+"Finalizado":true
+})
+
+
+documento2= ({
+"_id" : "Dani",
+"NomeSite": "DB4B.co",
+"titulo": "Certificação SQL Server", "categoria": "Gravar Vídeo",
+"Canal Youtube": "DB4Beginners", "keyWords":
+[
+"SQL Server 2016",
+"70-761",
+"Banco de Dados", "Relacional"
+],
+"Finalizado":true
+})
+
+
+6-) Inserir vários documentos em uma coleção
+db.Atividades.insertMany([documento1, documento2, documento, documentoX])
+
+
+7-) Mostrar a quantidade de documentos em uma coleção
+db.Atividades.count()
+
+
+9-) Mostrar todos os documentos da coleção
+db.Atividades.find()
+
+
+10-) Mostrar todos os documentos da coleção, de forma organizada
+db.Atividades.find().pretty()
+ 
+ 
+11-) Mostrar somente o primeiro documento da coleção
+db.Atividades.findOne()
+
+
+12-) Mostrar todos os documentos da coleção sem exibir o atributo _id
+db.Atividades.find({}, {_id:0})
+
+
+13-) Ordenar retorno query 13a-) Ordem crescente:
+db.Atividades.find().sort({categoria:1}).pretty()
+
+
+13b-) Ordem decrescente:
+db.Atividades.find().sort({categoria:-1}).pretty()
+
+
+14-) Limitar a quantidade de documentos retornados
+db.Atividades.find().limit(2).pretty()
+
+
+15-) Retornar os valores únicos de um atributo de uma coleção
+db.Atividades.distinct("categoria")
+
+
+16-) Buscar todos os documentos com o atributo Finalizado = False e não mostrar o atributo _id
+db.Atividades.find({Finalizado : false} , {_id :0})
+
+
+Replicação de dados
+
+Pré treino
+●	Para simular localmente a replicação é preciso:
+   ●	Criar um diretório de dados para cada servidor que fará parte da replicação;
+●	Para iniciar os serviços:
+  ●	Atribuir números de portas diferentes;
+  ●	atribuir o mesmo nome para o replicaset;
+  ●	atribuir um nome para cada arquivo de log;
+●	Informar o path do diretório de dados;
+  ●	Sintaxe: mongod --port 27012 --replSet r1 --dbpath ./db1 --logpath./log.1
+●	Para iniciar o replicaset é necessário executar o mongo.exe, conectando-se a um dos servidores já iniciados
+●	No mongo.exe criar uma variável com as configurações da replicação:
+Config = { _id : "r1" ,
+members : [
+{ _id:0, host:"localhost:27022" },
+{ _id:2, host:"localhost:27023" },
+{ _id:3, host:"localhost:27024" }
+]
+}
+●	Iniciar o replicaset;
+rs.initiate ( Config )
+●	Para saber como está a "saúde“ do replicaset que acabamos de criar usamos a função rs.status()
+●	Uma das informações relevantes é saber qual papel cada servidor
+assumiu (Primary ou Secondary) e se todos os servidores estão ativos;
+●	Para verificar se um servidor é o Master é possível usar a função db.isMaster();
+●	Um servidor em um ambiente replicado não é primário! Ele está primário e
+isso pode mudar a qualquer momento.
+
+
+Treino
+●	Ao copiar os comandos lembre que este é um exemplo, que todos os servidores estão na mesma máquina, o que não vai ocorrer em um ambiente produtivo.
+●	Sinta-se livre para escolher os paths!
+●	Treine, teste, avalie, erre, corrija, pesquise e comece tudo de novo!
+
+
+1	. Crie os diretórios para log e para dados
+●	Diretório raiz
+cd /Users/DaniMonteiroDBA/Desktop/MongoDB mkdir dbRepSet
+
+●	Diretório dos servidores
+cd /Users/DaniMonteiroDBA/Desktop/MongoDB/dbRepSet mkdir db1
+mkdir db2 mkdir arb
+ 
+Ponto de atenção! Parâmetros para iniciar os servidores:
+●	Atenção aos parâmetros usados quando iniciamos os servidores:
+o /Applications/MongoDB/V4.0/bin/mongod = Path do executável mongod (daemon)
+●	--port 27052 = porta utilizado para o servidor
+●	--replSet r1 = nome do replicaset, que será igual para todos os servidores que fazem parte dele
+●	--dbpath 
+/Users/DaniMonteiroDBA/Desktop/MongoDB/dbRepSet/db1 = path do diretório de dados
+●	--logpath
+/Users/DaniMonteiroDBA/Desktop/MongoDB/dbRepSet/log.1 = path do arquivo de log
+
+2	. Crie os nós do cluster
+
+●	Execute um comando em cada terminal (no IOS)
+●	No windows utilize o prefixo start /b antes de cada comando e execute todos no mesmo prompt
+
+/Applications/MongoDB/V4.0/bin/mongod --port 27052
+--replSet r1 --dbpath
+/Users/DaniMonteiroDBA/Desktop/MongoDB/dbRepSet/db1
+--logpath
+/Users/DaniMonteiroDBA/Desktop/MongoDB/dbRepSet/log.1
+
+
+/Applications/MongoDB/V4.0/bin/mongod --port 27053
+--replSet r1 --dbpath
+/Users/DaniMonteiroDBA/Desktop/MongoDB/dbRepSet/db2
+--logpath
+/Users/DaniMonteiroDBA/Desktop/MongoDB/dbRepSet/log.2
+
+
+/Applications/MongoDB/V4.0/bin/mongod --port 30000
+--replSet r1 --dbpath
+/Users/DaniMonteiroDBA/Desktop/MongoDB/dbRepSet/arb
+--logpath
+/Users/DaniMonteiroDBA/Desktop/MongoDB/dbRepSet/arb.log
+
+
+3	. Configure a replicação
+●	Escolher um dos servers e executar o mongo (o client do MongoDB, lembra?);
+
+/Applications/MongoDB/V4.0/bin/mongo --port 27052
+
+
+●	Criar variável
+
+Config = {
+_id : "r1" , members : [
+ 
+{ _id:0, host:"localhost:27052" },
+{ _id:2, host:"localhost:27053" }]
+}
+
+
+●	Iniciar a replicação;
+rs.initiate ( Config )
+
+
+●	Para saber como está a saúde do replicaset que acabamos de criar vamos usar o método status();
+rs.status()
+
+
+●	Para verificar se o servidor é o master;
+db.isMaster()
+
+
+●	Configurar um arbitro (precisa estar conectado no primary);
+rs.addArb("localhost:30000")
+
+
+●	Para saber como está a saúde do replicaset ver o status e verificar se o arbitro foi incluído corretamente executar o método status() novamente
+rs.status()
+
+
+4. Divirta-se!
+Faça consultas, derrube servidores, inclua dados… Comece de novo…
+
+
+Sharding
+
+Treino
+Espero que você tenha compreendido os principais conceitos do particionamento dos dados no MongoDB. E neste caso é hora de ver tudo funcionando na prática. Lembre-se que este roteiro serve para testes, uma vez que usaremos uma única máquina para ser config server, mongos e shard server. Em um ambiente de produção a topologia será mais complexa.
+
+
+1-	Criar o diretório de dados do servidor de configuração cd /Users/DaniMonteiroDBA/Desktop/MongoDB mkdir Sharding
+cd /Users/DaniMonteiroDBA/Desktop/MongoDB/Sharding
+ 
+mkdir cfg1 mkdir cfg2 mkdir cfg3
+
+
+2-	Iniciar os servidores de configuração. Serão 3, porque estão replicados e o fator de replicação padrão é 3 (a opção start /b executa o comando em Segundo plano)
+
+/Applications/MongoDB/V4.0/bin/mongod --configsvr --dbpath /Users/DaniMonteiroDBA/Desktop/MongoDB/Sharding/cfg1 --replSet conf --port 26051 --logpath /Users/DaniMonteiroDBA/Desktop/MongoDB/Sharding/log.cfg0 --logappend
+
+/Applications/MongoDB/V4.0/bin/mongod --configsvr --dbpath /Users/DaniMonteiroDBA/Desktop/MongoDB/Sharding/cfg2 --replSet conf --port 26052 --logpath /Users/DaniMonteiroDBA/Desktop/MongoDB/Sharding/log.cfg1 --logappend
+
+/Applications/MongoDB/V4.0/bin/mongod --configsvr --dbpath /Users/DaniMonteiroDBA/Desktop/MongoDB/Sharding/cfg3 --replSet conf --port 26053 --logpath /Users/DaniMonteiroDBA/Desktop/MongoDB/Sharding/log.cfg2 --logappend
+
+
+Atenção que usamos a opção –configsvr indica que este é um servidor de configuração
+
+
+3– Configurar a replicação dos config servers
+/Applications/MongoDB/V4.0/bin/mongo --port 26051 rs.initiate(
+{
+_id: "conf", configsvr: true, members: [
+{ _id : 0, host : "localhost:26051" },
+{ _id : 1, host : "localhost:26052" },
+{ _id : 2, host : "localhost:26053" }
+]
+})
+ 
+4-	Veja que no diretório C:\Cursos\MongoDB\Sharding foram criados os arquivos de log log_cfg1.txt, log_cfg2.txt e log_cfg3.txt
+
+
+5-	Em um outro pompt de comando, Crie 3 diretórios de dados, um diretório para cada shard server.
+
+cd /Users/DaniMonteiroDBA/Desktop/MongoDB/Sharding mkdir S1
+mkdir S2 mkdir S3
+
+6-	Iniciar os servidores
+
+/Applications/MongoDB/V4.0/bin/mongod --shardsvr --port 27051
+--dbpath /Users/DaniMonteiroDBA/Desktop/MongoDB/Sharding/s1
+--logpath
+/Users/DaniMonteiroDBA/Desktop/MongoDB/Sharding/s1/log_s1.txt
+--logappend
+
+
+/Applications/MongoDB/V4.0/bin/mongod --shardsvr --port 27061
+--dbpath /Users/DaniMonteiroDBA/Desktop/MongoDB/Sharding/s2
+--logpath
+/Users/DaniMonteiroDBA/Desktop/MongoDB/Sharding/s2/log_s2.txt
+--logappend
+
+
+/Applications/MongoDB/V4.0/bin/mongod --shardsvr --port 27071
+--dbpath /Users/DaniMonteiroDBA/Desktop/MongoDB/Sharding/s3
+--logpath
+/Users/DaniMonteiroDBA/Desktop/MongoDB/Sharding/s3/log_s3.txt
+--logappend
+
+
+Atenção para a opção --shardsvr que indica que o servidor é um shard server
+
+
+7-	Verifique se os arquivos de log de cada servidor foram gerados corretamente
+
+
+8-	Iniciar um servidor mongos informando explicitamente quais são os servidores de configuração.
+/Applications/MongoDB/V4.0/bin/mongos --configdb "conf/localhost:26051,localhost:26052,localhost:26053" --logpath log.mongos0 --port 27019
+ 
+ 
+9-	Veja que existem logs para todos os servidores que estão sendo executados
+
+
+10-	Conectar no mongoDB
+/Applications/MongoDB/V4.0/bin/mongo --port 27019
+
+
+11-	Adicionar os shard servers ao objeto sh sh.addShard("localhost:27051") sh.addShard("localhost:27061") sh.addShard("localhost:27071")
+
+
+12 – Verificar o status do sharding
+sh.status()
+
+Dica da Dani...Observe as mensagens de retorno, não é complexo ver se os servidores foram adicionados corretamente... Neste caso você verá que os 3 servidores foram adicionados e que nenhum banco de dados particionado foi criado.
+
+
+13-	Habilite um banco de dados para usar o particionamento e use-o
+sh.enableSharding ("loja") use loja
+
+
+14-	Criar uma coleção com 20000 clientes
+for (var i=0; i < 20000; i++ ) { db.c.insert ( { pos:i, dt: Date() } ) };
+
+Comentário da Dani: Fala sério este comando é muito fofo! Ele contém um loop simples, que insere na coleção chamada "c" 20000 documentos. O que você acha de exercitar suas habilidades de Dev e incrementar este script?
+
+
+15-	Criar um índice na coleção de clientes, para ser usado como shard key
+db.c.createIndex ( { pos:1 }, { unique : true } )
+
+
+Comentário da Dani: se fosse um índice do tipo hashed, faríamos: db.collection.createIndex( { _id: "hashed" } )
+Lembrando que neste caso o índice não pode ser único nem composto. Que tal testar?
+ 
+16-	Particiona a coleção
+sh.shardCollection ("loja.c", {pos:1}, true)
+
+
+17-	Verifica como os dados da coleção c estão distribuídos nos 3 servidores shard
+db.c.getShardDistribution()
+
+
+Comentário da Dani: Veja que a distribuição dos documentos nas partições está desigual. Se quiser corrigir a distribuição, siga os passos abaixo (lembrando que é uma correção pontual!)
+
+
+18-	Pare o balanceamento feito pelo MongoDB
+sh.stopBalancer()
+
+
+19-	Determine como os dados serão particionados. Neste caso decidi que os dados menores de 10000 ficarão no shard0000 e os dados maiores que 10000 serão movidos para o shard0002 (te desafio novamente... Mude a distribuição...)
+sh.splitAt ("loja.c", {pos:10000} )
+
+
+20-	Mover os dados para o shard desejado neste caso os dados maiores que 10000 serão movidos para o shard0002
+sh.moveChunk ( "loja.c", {pos:10000}, "shard0002" )
+
+
+21-	Verifique a distribuição dos dados
+db.c.getShardDistribution()
+
+
+21 – Reinicie o balancer
+sh.startBalancer()
+ 
+ 
+
+GridFS
+
+1-) Inclusão de Arquivos (criar no diretório C:\ um arquivo chamado Artigo.docx)
+mongofiles --host localhost --db DB4B put C:\Artigo.docx
+
+
+2-) Consulta de Arquivos
+mongofiles --host localhost --db DB4B list
+
+
+
+3-) Para localizar um arquivo que possua em seu nome uma determinada string, podemos usar o comando search, cuja sintaxe é:
+mongofiles --host localhost --db DB4B search Art
+
+
+4-) Exclusão de Arquivos
+mongofiles --host localhost --db DB4B delete C:\Artigo.docx
